@@ -7,22 +7,27 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'quantity', 'shop', 'image', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'price', 'quantity', 'shop', 'image', 'variations', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
     def validate_price(self, value):
         if value <= 0:
-            serializers.ValidationError('Product price must be greater than zero', code='invalid')
+            raise serializers.ValidationError('Product price must be greater than zero', code='invalid')
         return value
 
     def validate_quantity(self, value):
         if value <=0:
-            serializers.ValidationError('Quantity must be greater than zero')
+            raise serializers.ValidationError('Quantity must be greater than zero')
+        return value
+
+    def validate_variations(self, value):
+        if len(value) != len(list(set(value))):
+            raise serializers.ValidationError('Duplicate variations found. Variations should be unique from each other')
         return value
 
     def validate_name(self, value):
         if len(value.replace(' ', '')) <= 0:
-            serializers.ValidationError('Product name is invalid')
+            raise serializers.ValidationError('Product name is invalid')
         return value
 
 class ProductCreateSerializer(ProductSerializer):

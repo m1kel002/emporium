@@ -85,3 +85,74 @@ class TestProductEndpoints(TestCase):
         serializer = ProductSerializer(product)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+@pytest.mark.django_db
+class TestProductSecuredEndpoints(TestCase):
+
+    def setUp(self):
+        self.user = create_user(email='user@example.com', password='test123')
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        self.shop = create_shop(self.user)
+
+    def test_create_product(self):
+        """GIVEN a product data with VALID data
+        WHEN a user tries to create the product
+        THEN the product should be created"""
+        payload = dict(name='Test Product',
+                       quantity=1,
+                       price=20,
+                       shop=self.shop.id,
+                       variations=['var1', 'var2']
+                       )
+        res = self.client.post(PRODUCTS_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        product = Product.objects.get(id=res.data['id'])
+        self.assertIsNotNone(product)
+        self.assertTrue(hasattr(product, 'id'))
+        self.assertEqual(res.data['id'], product.id)
+
+    def test_create_product_with_invalid_price(self):
+        """"
+        GIVEN a product data with invalid price
+        WHEN user tries to create the product
+        THEN the product should NOT be created and return an error
+        """
+        payload = dict(name='Test Product', price=-1, quantity=20, shop=self.shop.id)
+        res = self.client.post(PRODUCTS_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('price', res.data)
+
+    def test_create_product_invalid_quantity(self):
+        """
+        GIVEN a product data with invalid quantity
+        WHEN a user tries to create the product
+        THEN the product should NOT be created and return an error
+        """
+        payload = dict(name='Test Product', price=20, quantity=-1, shop=self.shop.id)
+        res = self.client.post(PRODUCTS_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('quantity', res.data)
+
+    def test_create_product_invalid_name(self):
+        """
+        GIVEN a product data with invalid name
+        WHEN a user tries to create the product
+        THEN the product should NOT be created and return an error
+        """
+        payload = dict(name=' ', price=1, quantity=20, shop=self.shop.id)
+        res = self.client.post(PRODUCTS_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('name', res.data)
+
+    def test_create_product_duplicate_variations(self):
+        """
+        GIVEN a product data with duplicate variations
+        WHEN a user tries to create the product
+        THEN the product should NOT be created and return an error
+        """
+        payload = dict(name='Test Product', price=20, quantity=20, shop=self.shop.id,
+                       variations=['var1', 'var1'])
+        res = self.client.post(PRODUCTS_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('variations', res.data)
