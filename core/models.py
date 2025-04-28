@@ -4,6 +4,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin
 )
+from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 
 class UserManager(BaseUserManager):
@@ -57,9 +58,16 @@ class Product(Entity):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    variations = ArrayField(models.CharField(max_length=50), blank=True, default=list)
 
 
 class Cart(Entity):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
+
+
+class Review(Entity):
+    message = models.TextField(blank=True)
+    rating = models.DecimalField(max_digits=2, decimal_places=1)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
