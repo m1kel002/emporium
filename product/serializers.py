@@ -7,7 +7,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'quantity', 'shop', 'image', 'variations', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'price', 'quantity', 'shop', 'image', 'variations', 'rating', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
     def validate_price(self, value):
@@ -29,6 +29,11 @@ class ProductSerializer(serializers.ModelSerializer):
         if len(value.replace(' ', '')) <= 0:
             raise serializers.ValidationError('Product name is invalid')
         return value
+
+    def validate_rating(self, value):
+        if 0 <= value <= 5:
+            return value
+        raise serializers.ValidationError('Product rating is invalid')
 
 class ProductCreateSerializer(ProductSerializer):
     shop = serializers.PrimaryKeyRelatedField(queryset=Shop.objects.all())

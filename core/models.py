@@ -59,6 +59,7 @@ class Product(Entity):
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
     variations = ArrayField(models.CharField(max_length=50), blank=True, default=list)
+    rating = models.DecimalField(max_digits=2, decimal_places=1, default=0)
 
 
 class Cart(Entity):

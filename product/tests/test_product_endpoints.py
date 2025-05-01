@@ -156,3 +156,14 @@ class TestProductSecuredEndpoints(TestCase):
         res = self.client.post(PRODUCTS_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('variations', res.data)
+
+    def test_create_product_with_invalid_rating(self):
+        """
+        GiVEN a product data with invalid rating
+        WHEN user tries to create the product
+        THEN the product should not be created and return an error
+        """
+        payload = dict(name='Test Product', price=10, rating=-1, quantity=1, shop=self.shop.id)
+        res = self.client.post(PRODUCTS_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('rating', res.data)
