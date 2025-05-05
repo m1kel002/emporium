@@ -43,10 +43,13 @@ class ProductAPIView(views.APIView):
         products = Product.objects.all().filter(quantity__gt=0)
         shop = request.query_params.get('shop')
         search_param = request.query_params.get('search')
+        category_param = request.query_params.get('category')
         if shop:
             products = products.filter(shop__id__exact=shop)
         if search_param:
             products = products.filter(name__icontains=search_param)
+        if category_param:
+            products = products.filter(category__iexact=category_param)
         paginated_products = paginator.paginate_queryset(products, request)
         serializer = ProductSerializer(paginated_products, many=True)
         return paginator.get_paginated_response(serializer.data)

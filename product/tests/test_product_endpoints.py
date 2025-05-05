@@ -86,6 +86,15 @@ class TestProductEndpoints(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
+    def test_get_product_by_category(self):
+        shop = create_shop(user=self.user)
+        create_product(user=self.user, shop=shop, category='test')
+        create_product(user=self.user, shop=shop, category='test')
+        res = self.client.get(products_url_with_query_param(category='test'))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data['results']), 2)
+
+
 @pytest.mark.django_db
 class TestProductSecuredEndpoints(TestCase):
 
