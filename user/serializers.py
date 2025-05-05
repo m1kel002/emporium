@@ -39,3 +39,7 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+class UserShortInfoSerializer(serializers.Serializer):
+    class Meta:
+        fields = ['id', 'name']

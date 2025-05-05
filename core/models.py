@@ -72,3 +72,4 @@ class Review(Entity):
     message = models.TextField(blank=True)
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
