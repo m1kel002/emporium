@@ -22,6 +22,7 @@ class Migration(migrations.Migration):
                 ('rating', models.DecimalField(decimal_places=1, max_digits=2)),
                 ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to=settings.AUTH_USER_MODEL)),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.product')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL))
             ],
             options={
                 'abstract': False,
