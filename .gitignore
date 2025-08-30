@@ -8,5 +8,6 @@ __pycache__/
 target/
 
 .env
-
+.py311
+.venv311
 uploads/
