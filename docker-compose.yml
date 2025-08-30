@@ -11,10 +11,12 @@ services:
 
   db:
     image: bitnami/postgresql:14.17.0
+    env_file:
+      - emporium/.env
     environment:
-      - POSTGRES_PASSWORD=admin123
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=emporium
+      POSTGRESQL_USERNAME: ${DB_USER}
+      POSTGRESQL_PASSWORD: ${DB_PASSWORD}
+      POSTGRESQL_DATABASE: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
