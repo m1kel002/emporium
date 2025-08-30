@@ -176,3 +176,9 @@ class TestProductSecuredEndpoints(TestCase):
         res = self.client.post(PRODUCTS_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('rating', res.data)
+
+    def test_create_product_with_invalid_shop(self):
+        payload = dict(name='Test Product', price=10, rating=-1, quantity=1, shop='2')
+        res = self.client.post(PRODUCTS_URL, payload)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('shop', res.data)

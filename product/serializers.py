@@ -36,7 +36,10 @@ class ProductSerializer(serializers.ModelSerializer):
         raise serializers.ValidationError('Product rating is invalid')
 
 class ProductCreateSerializer(ProductSerializer):
-    shop = serializers.PrimaryKeyRelatedField(queryset=Shop.objects.all())
+    shop = serializers.PrimaryKeyRelatedField(queryset=Shop.objects.all(), error_messages={
+        'does_not_exist': 'Shop not found',
+        'incorrect_type': 'Shop id must be an integer'
+    })
 
     class Meta(ProductSerializer.Meta):
         fields = ProductSerializer.Meta.fields
