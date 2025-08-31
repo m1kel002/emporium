@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from core.models import Product, Shop
+from review.serializers import ReviewSerializer
 from shop.serializers import ShopShortInfoSerializer
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -50,3 +51,14 @@ class ProductShortInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'name', 'price', 'image']
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+    shop = ShopShortInfoSerializer(read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ProductSerializer.Meta.fields + ['reviews']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+    # add sold count
+    # add detailed shop info

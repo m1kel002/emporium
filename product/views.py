@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from product.serializers import (ProductSerializer,
+from product.serializers import (ProductDetailSerializer, ProductSerializer,
                                  ProductCreateSerializer)
 from core.models import Product
 from core.pagination import CustomPagination
@@ -76,7 +76,7 @@ class ProductDetailAPIView(views.APIView):
 
     def get(self, request, product_id):
         product = get_object_or_404(Product, pk=product_id)
-        serializer = ProductSerializer(product)
+        serializer = ProductDetailSerializer(product)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, product_id):
