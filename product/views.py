@@ -42,7 +42,9 @@ class ProductAPIView(views.APIView):
 
     def get(self, request):
         paginator = CustomPagination()
-        products = Product.objects.all().filter(quantity__gt=0)
+        products = Product.objects.all().filter(quantity__gt=0).annotate(
+            sold_count=Coalesce(Sum('transaction__quantity'), Value(0))
+        )
         shop = request.query_params.get('shop')
         search_param = request.query_params.get('search')
         category_param = request.query_params.get('category')

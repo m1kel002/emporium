@@ -5,10 +5,11 @@ from shop.serializers import ShopShortInfoSerializer
 
 class ProductSerializer(serializers.ModelSerializer):
     shop = ShopShortInfoSerializer(read_only=True)
+    sold_count = serializers.IntegerField(read_only=True, default=0)
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'quantity', 'shop', 'image', 'variations', 'rating', 'category', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'price', 'quantity', 'shop', 'image', 'variations', 'rating', 'category', 'sold_count', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
 
     def validate_price(self, value):
@@ -61,5 +62,3 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         model = Product
         fields = ProductSerializer.Meta.fields + ['sold_count', 'reviews']
         read_only_fields = ['id', 'created_at', 'updated_at']
-    # add sold count
-    # add detailed shop info
