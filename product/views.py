@@ -8,6 +8,8 @@ from product.serializers import (ProductDetailSerializer, ProductSerializer,
                                  ProductCreateSerializer)
 from core.models import Product
 from core.pagination import CustomPagination
+from django.db.models import Sum, Value
+from django.db.models.functions import Coalesce
 
 
 class ListProductView(generics.ListAPIView):
@@ -75,7 +77,7 @@ class ProductDetailAPIView(views.APIView):
             return [AllowAny()]
 
     def get(self, request, product_id):
-        product = get_object_or_404(Product, pk=product_id)
+        product = get_object_or_404(Product.objects.annotate(sold_count=Coalesce(Sum('transaction__quantity'), Value(0))), pk=product_id)
         serializer = ProductDetailSerializer(product)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -55,10 +55,11 @@ class ProductShortInfoSerializer(serializers.ModelSerializer):
 class ProductDetailSerializer(serializers.ModelSerializer):
     shop = ShopShortInfoSerializer(read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
+    sold_count = serializers.IntegerField(read_only=True, default=0)
 
     class Meta:
         model = Product
-        fields = ProductSerializer.Meta.fields + ['reviews']
+        fields = ProductSerializer.Meta.fields + ['sold_count', 'reviews']
         read_only_fields = ['id', 'created_at', 'updated_at']
     # add sold count
     # add detailed shop info
