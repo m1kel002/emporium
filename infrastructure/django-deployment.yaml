@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emporium
+spec:
+  selector:
+    matchLabels:
+      app: emporium
+  template:
+    metadata:
+      labels:
+        app: emporium
+    spec:
+      containers:
+      - name: emporium
+        image: <Image>
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
