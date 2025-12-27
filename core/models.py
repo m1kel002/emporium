@@ -6,6 +6,8 @@ from django.contrib.auth.models import (
 )
 from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
+from decimal import Decimal
+
 
 class UserManager(BaseUserManager):
 
@@ -82,3 +84,9 @@ class Transaction(Entity):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     item_price_at_purchase = models.DecimalField(max_digits=12, decimal_places=2)
     total = models.DecimalField(max_digits=12, decimal_places=2)
+
+
+class ImageUpload(Entity):
+    name = models.CharField()
+    image_url = models.URLField()
+    size = models.DecimalField(max_digits=12, default=Decimal("0.00"), decimal_places=2)

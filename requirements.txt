@@ -7,3 +7,6 @@ djangorestframework>=3.16.0,<3.17
 django-cors-headers==4.7.0
 pillow==11.2.1
 psycopg2==2.9.11
+django-storages==1.14.6
+boto3==1.42.16
+pillow==11.2.1

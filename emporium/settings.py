@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'core',
     'product',
     'shop',
-    'corsheaders'
+    'corsheaders',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -148,4 +149,15 @@ REST_FRAMEWORK = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT_URL = BASE_DIR / 'media'
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 CORS_ALLOW_ALL_ORIGINS = True
+
+# local development
+IS_LOCAL = True
+
+# AWS S3
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
+AWS_S3_REGION_NAME = ''
+AWS_STORAGE_BUCKET_NAME = 'emporium-data'
+S3_KEY_PREFIX = 'media'
