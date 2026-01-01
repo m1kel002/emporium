@@ -19,16 +19,11 @@ s3 = boto3.client(
 )
 
 class GenerateUploadInfo(views.APIView):
+
     def post(self, request):
         upload_info = self.generate_upload_url(request, settings.IS_LOCAL)
         return Response(upload_info)
 
-    # Create your views here.
-    def upload_to_s3():
-        logger.info("Uploading image to s3")
-
-    def upload_locally():
-        logger.debug("Uploading image locally")
 
     def generate_upload_url(self, request, is_local=True) -> dict:
         filename = request.data['filename']
@@ -41,7 +36,7 @@ class GenerateUploadInfo(views.APIView):
         if is_local:
             # for local testing
             return {
-                "upload_url": "/local-image-upload/",
+                "upload_url": "/media/upload/local/",
                 "image_url": request.build_absolute_uri(f"/media/{unique_name}")
             }
         
@@ -65,7 +60,7 @@ class GenerateUploadInfo(views.APIView):
         })
 
 
-class FileLocalUpload(views.APIView):
+class FileLocalUploadAPIView(views.APIView):
     # upload files locally
     def post(self, request):
         file = request.FILES["file"]

@@ -158,6 +158,6 @@ IS_LOCAL = True
 # AWS S3
 AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = ''
-AWS_S3_REGION_NAME = ''
+AWS_S3_REGION_NAME = 'ap-southeast-1'
 AWS_STORAGE_BUCKET_NAME = 'emporium-data'
 S3_KEY_PREFIX = 'media'
