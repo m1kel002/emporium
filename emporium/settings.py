@@ -148,7 +148,7 @@ REST_FRAMEWORK = {
 }
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT_URL = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 CORS_ALLOW_ALL_ORIGINS = True
 

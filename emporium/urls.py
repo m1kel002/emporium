@@ -4,6 +4,7 @@ URL configuration for emporium project.
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from django.conf.urls.static import static
 
 from core.views import FileLocalUploadAPIView, GenerateUploadInfo
 
@@ -17,5 +18,9 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    # serve image
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # generate upload url info
     urlpatterns.append(path('api/media/upload', GenerateUploadInfo.as_view()))
+    # endpoint for upload file locally
     urlpatterns.append(path('api/media/upload/local', FileLocalUploadAPIView.as_view()))
