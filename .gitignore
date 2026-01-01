@@ -11,3 +11,4 @@ target/
 .py311
 .venv311
 uploads/
+media/
