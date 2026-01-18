@@ -1,26 +1,32 @@
 services:
-  app:
-    build: .
-    ports:
-      - "8000:8000"
-    env_file:
-      - emporium/.env
-    depends_on:
-      - db
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+  # TODO: disable backend for now
+  # app:
+  #   build: .
+  #   image: emporium-backend:1.0.0
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     POSTGRESQL_USER: ${DB_USER}
+  #     POSTGRESQL_PASSWORD: ${DB_PASSWORD}      
+  #     POSTGRESQL_DATABASE: ${DB_NAME}
+  #     POSTGRESQL_HOST: ${DB_HOST}
+  #   depends_on:
+  #     - db
+  #   entrypoint: ["./scripts/wait-for-postgresql.sh", "${DB_HOST}", "sh", "-c", "python manage.py migrate"]
+  #   command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
   db:
-    image: bitnami/postgresql:14.17.0
-    env_file:
-      - emporium/.env
+    # image: bitnami/postgresql:14.17.0
+    image: bitnami/postgresql:latest
     environment:
-      POSTGRESQL_USERNAME: ${DB_USER}
+      POSTGRESQL_USER: ${DB_USER}
       POSTGRESQL_PASSWORD: ${DB_PASSWORD}
       POSTGRESQL_DATABASE: ${DB_NAME}
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    volumes:  
+      # - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/bitnami/postgresql
 
 volumes:
   postgres_data:
